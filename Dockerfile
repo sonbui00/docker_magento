@@ -14,6 +14,9 @@ RUN requirements="libpng12-dev libjpeg-dev libjpeg62-turbo libmcrypt4 libmcrypt-
   && requirementsToRemove="libpng12-dev libjpeg-dev libmcrypt-dev libcurl3-dev libicu-dev" \
   && apt-get purge --auto-remove -y $requirementsToRemove
 
+
+RUN yes | pecl install xdebug
+
 RUN curl -sSL https://getcomposer.org/composer.phar -o /usr/bin/composer \
   && chmod +x /usr/bin/composer \
   && apt-get update && apt-get install -y zlib1g-dev git && rm -rf /var/lib/apt/lists/* \
@@ -29,6 +32,7 @@ VOLUME ["/var/www"]
 WORKDIR /var/www
 
 ADD ./config/php/more.ini /usr/local/etc/php/conf.d/more.ini
+ADD ./config/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 RUN usermod -u 1000 www-data
 RUN chown -R www-data:www-data /var/www
